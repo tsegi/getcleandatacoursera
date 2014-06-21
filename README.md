@@ -1,2 +1,2 @@
-getcleandatacoursera
+How the Script Works
 ====================
