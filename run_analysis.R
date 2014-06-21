@@ -1,13 +1,14 @@
-## load needed library
-library(plyr)
-
 ## main method to prepare tidy data.
 ## If running on a Mac, you may need to pass downloadMethod = "curl" to get this script to run properly
-run_analysis <- function(downloadMethod = "auto") {
+run_analysis <- function(rawData = "samsungdata.zip", downloadMethod = "auto") {
+
+  ## load needed library
+  install.packages("plyr")
+  library(plyr)
   
   #### Step 1: Merges the training and the test sets to create one data set.  
   # make sure raw data is present
-  # prepare_raw_data(downloadMethod)  
+  prepare_raw_data(rawData, downloadMethod)  
   # read data from training and test data sets, then merge them
   data <- rbind(prepare_data_set("train"), prepare_data_set("test"))  
   # output the merged data set as the 1st data set required by the assignment
@@ -17,7 +18,7 @@ run_analysis <- function(downloadMethod = "auto") {
   
   #### Step 2: Extracts only the measurements on the mean and standard deviation for each measurement. 
   # grep the column names that contain "mean()" and "std()"
-  filter <- grepl('mean\\(\\)|std\\(\\)',names(data))
+  filter <- grepl("mean\\(\\)|std\\(\\)",names(data))
   # preserve the "subject" and "activity" columns which are the first two columns in the data frame
   filter[1] <- TRUE
   filter[2] <- TRUE
@@ -53,13 +54,12 @@ run_analysis <- function(downloadMethod = "auto") {
 
 
 ## If the data zip is not already downloaded, download it from the web and also unzip it
-prepare_raw_data <- function(downloadMethod) {
-  destFile <- "samsungdata.zip" 
-  if (!file.exists(destFile)) {
+prepare_raw_data <- function(rawData = "samsungdata.zip", downloadMethod = "auto") {
+  if (!file.exists(rawData)) {
     fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-    download.file(fileUrl, destFile, method = downloadMethod)
+    download.file(fileUrl, rawData, method = downloadMethod)
   }
-  unzip(destFile)
+  unzip(rawData)
 }
 
 
