@@ -1,6 +1,16 @@
-README: How the Script Works
+README
 ====================
-This script operates in the default working directory. It comprises of 3 functions as described below.
+
+### Notes Before Running the Script
+This script operates in the default working directory. 
+
+It depends on the `plyr` package and the `reshape2` package. Please ensure that they are installed and loaded before you try to run this script.
+```
+install.packages(c("plyr", "reshape2"))
+library(plyr)
+library(reshape2)
+```
+This script comprises of 3 functions as described below.
 
 ### run_analysis
 #### Usage
@@ -16,7 +26,7 @@ Method to use to download the zipped raw data set used for this assignment. On W
 #### Details
 **This is the main function that you should call.** It will do the following few things:
 
- 1. Install and load the `plyr` package
+ 1. Check if the `plyr` package is available
  2. Download the raw data set if the zipped raw data set is not already present.
  3. Unzip the raw data set to the current working directory
  4. Perform the following steps as required by the assignment:

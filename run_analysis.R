@@ -3,14 +3,18 @@
 run_analysis <- function(rawData = "samsungdata.zip", downloadMethod = "auto") {
 
   ## load needed library
-  install.packages("plyr")
-  library(plyr)
+  library("plyr")
+  library("reshape2")
   
   #### Step 1: Merges the training and the test sets to create one data set.  
   # make sure raw data is present
   prepare_raw_data(rawData, downloadMethod)  
   # read data from training and test data sets, then merge them
   data <- rbind(prepare_data_set("train"), prepare_data_set("test"))  
+  # label the columns
+  features <- read.table("./UCI HAR Dataset/features.txt")
+  features$V2 <- gsub("-", "_", features$V2)
+  names(data) <- c("subject", "activity_id", features$V2)  
   # output the merged data set as the 1st data set required by the assignment
   write.table(data, "dataset1.txt")  
   #### Step 1 completes
@@ -41,12 +45,15 @@ run_analysis <- function(rawData = "samsungdata.zip", downloadMethod = "auto") {
   #### Step 3 completes
   
   #### Step 4: Appropriately labels the data set with descriptive variable names. 
-  # Already did so in prepare_data_set()
+  # Already did so in step 2
   #### Step 4 completes
   
   #### Step 5: Creates a second, independent tidy data set with the average of each variable for each activity and each subject. 
   data2melt <- melt(data2, id = c("subject", "activity_name"), measure.vars = measureCols)
   data3 <- dcast(data2melt, subject + activity_name ~ variable, mean)
+  # brackets looks bad when loading data set back into R, rename them
+  names(data3) <- gsub("\\(", "", names(data3))  
+  names(data3) <- gsub("\\)", "", names(data3))  
   write.table(data3, "dataset2.txt")  
   #### Step 5 completes
   
@@ -65,13 +72,8 @@ prepare_raw_data <- function(rawData = "samsungdata.zip", downloadMethod = "auto
 
 ## read data from each data set ("train" or "test") and merge into one data frame
 prepare_data_set <- function(dataset) {
-  colname <- read.table("./UCI HAR Dataset/features.txt")
   x <- read.table(paste("./UCI HAR Dataset/", dataset, "/X_", dataset, ".txt", sep = ""))
-  y <- read.table(paste("./UCI HAR Dataset/", dataset, "/Y_", dataset, ".txt", sep = ""))
+  y <- read.table(paste("./UCI HAR Dataset/", dataset, "/y_", dataset, ".txt", sep = ""))
   sub <- read.table(paste("./UCI HAR Dataset/", dataset, "/subject_", dataset, ".txt", sep = ""))
-  # name the columns for easier reading
-  names(x) <- colname[,2]
-  names(y) <- "activity_id"
-  names(sub) <- "subject"  
   cbind(sub, y, x)
 }
