@@ -40,9 +40,9 @@ Method to use to download the zipped raw data set used for this assignment. On W
 #### Usage
 `prepare_raw_data(rawData = "samsungdata.zip", downloadMethod = "auto")`
 #### Arguments
-Same as `run_analysis`
+Same as [`run_analysis`](#run_analysis)
 #### Details
-Supporting function that `run_analysis` will call to download the zipped raw data set, and unzip it.
+Supporting function that [`run_analysis`](#run_analysis) will call to download the zipped raw data set, and unzip it.
 
 **You do not need to call this.**
 
@@ -53,6 +53,6 @@ Supporting function that `run_analysis` will call to download the zipped raw dat
 *dataset*:
 Value should be either "train" or "test". This denotes which data set in the raw data set should be manipulated.
 #### Details
-Supporting function that `run_analysis` will call to load the corresponding files from the raw data zip, and merge them into one single data frame.
+Supporting function that [`run_analysis`](#run_analysis) will call to load the corresponding files from the raw data zip, and merge them into one single data frame.
 
 **You do not need to call this.**
